@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:chat_app/provider/auth_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:chat_app/screen/auth/login_screen.dart';
+import 'package:chat_app/screen/auth/signup_screen.dart';
+import 'package:chat_app/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,16 +18,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   File? _image;
-  final _auth = FirebaseAuth.instance;
-  final _fireStore = FirebaseFirestore.instance;
-  final _storage = FirebaseStorage.instance;
+//   final _auth = FirebaseAuth.instance;
+//   final _fireStore = FirebaseFirestore.instance;
+//   final _storage = FirebaseStorage.instance;
   @override
   Widget build(BuildContext context) {
-    // final authProvider = Provider.of<AuthProvider>(context);
-
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Create Account"),
+        title: const Text("SignUp Screen"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -71,14 +69,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     foregroundColor: Colors.white),
                 onPressed: () async {
                   try {
-                     AuthProvider().signUp(_emailController.text,
-                        _passwordController.text, _nameController.text, _image);
+                    await authProvider.signUp(
+                        _emailController.text,
+                        _passwordController.text,
+                        _nameController.text,
+                        _image.toString());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(),
+                      ),
+                    );
                   } catch (e) {
-                    print("Create Account :- $e");
+                    print("SignIn :- $e");
                   }
                 },
                 child: Text(
-                  "Create Account",
+                  "Sign in",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -92,12 +99,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SignUpScreen(),
+                    builder: (context) => LoginScreen(),
                   ),
                 );
               },
               child: Text(
-                "",
+                "Already Login",
                 style: TextStyle(color: Color(0xFF3876FD)),
               ),
             ),
