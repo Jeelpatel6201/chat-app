@@ -36,26 +36,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<String> _uploadImage(File image) async {
-    final ref = _storage.ref().child('user_images').child('${_auth.currentUser!.uid}.jpg');
+    final ref = _storage
+        .ref()
+        .child('user_images')
+        .child('${_auth.currentUser!.uid}.jpg');
     await ref.putFile(image);
     return await ref.getDownloadURL();
   }
 
   Future<void> signUp() async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+              email: _emailController.text, password: _passwordController.text);
       final imageUrl = await _uploadImage(_image!);
       await _fireStore.collection('users').doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
         "name": _nameController.text,
         "email": _emailController.text,
-        "imageUrl": imageUrl,
+          "imageUrl": imageUrl,
       });
       Fluttertoast.showToast(msg: "Sign Up Success");
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => LoginScreen(),
         ),
       );
     } catch (e) {

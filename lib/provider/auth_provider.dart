@@ -28,21 +28,4 @@ class AuthProvider with ChangeNotifier {
       print("logIn :- $e");
     }
   }
-
-  // Future<void> signUp(
-  //     String email, String password, String name, String imageUrl) async {
-  //   UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-  //       email: email, password: password);
-  //   await _fireStore.collection('users').doc(userCredential.user!.uid).set({
-  //     'uid': userCredential.user!.uid,
-  //     "name": name,
-  //     "email": email,
-  //     "imageUrl": imageUrl,
-  //   });
-  //   notifyListeners();
-  // }
-  // Future<void> signOut() async {
-  //   await _auth.signOut();
-  //   notifyListeners();
-  // }
 }
